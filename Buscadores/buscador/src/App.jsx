@@ -7,9 +7,13 @@ import { useEffect, useState } from 'react'
 function App() {
 
   const [usuarios, setUsuarios] = useState([])
+  const [pagina, setPagina] = useState(1)
   
+  const getPagina = (e) =>{
+    setPagina(e.target.value)
+  }
   const getUsuarios = () =>{
-    fetch('https://reqres.in/api/users?page=2')
+    fetch(`https://reqres.in/api/users?page=${pagina}`)
         .then(res => res.json())
         .then(res => {
           setUsuarios(res.data)
@@ -19,7 +23,7 @@ function App() {
 
   useEffect(()=>{
     getUsuarios()
-  },[])
+  },[pagina])
   return (
     <>
       <div>
@@ -35,7 +39,10 @@ function App() {
           return <li key={usuario.id}>{usuario.first_name} {usuario.last_name}  <img src={usuario.avatar} alt="avatar" /></li>
         })}
       </ul>
-      
+      <select onChange={getPagina}>
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
     </>
   )
 }
